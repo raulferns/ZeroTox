@@ -1,0 +1,313 @@
+{
+  "accuracy": 0.8964,
+  "classification_report": {
+    "Hate Speech": {
+      "precision": 0.46107784431137727,
+      "recall": 0.3598130841121495,
+      "f1-score": 0.4041994750656168,
+      "support": 214.0
+    },
+    "Offensive Language": {
+      "precision": 0.934183321847002,
+      "recall": 0.9416464050017367,
+      "f1-score": 0.9379000172980453,
+      "support": 2879.0
+    },
+    "Normal Speech": {
+      "precision": 0.8397534668721109,
+      "recall": 0.872,
+      "f1-score": 0.8555729984301413,
+      "support": 625.0
+    },
+    "accuracy": 0.8964497041420119,
+    "macro avg": {
+      "precision": 0.7450048776768301,
+      "recall": 0.7244864963712954,
+      "f1-score": 0.7325574969312677,
+      "support": 3718.0
+    },
+    "weighted avg": {
+      "precision": 0.8910786334252886,
+      "recall": 0.8964497041420119,
+      "f1-score": 0.8933421090596967,
+      "support": 3718.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      77,
+      120,
+      17
+    ],
+    [
+      81,
+      2711,
+      87
+    ],
+    [
+      9,
+      71,
+      545
+    ]
+  ],
+  "classes": [
+    "Hate Speech",
+    "Offensive Language",
+    "Normal Speech"
+  ],
+  "total_training_samples": 21064,
+  "total_test_samples": 3718,
+  "dataset_distribution": {
+    "Hate Speech": 1430,
+    "Offensive Language": 19189,
+    "Normal Speech": 4163
+  },
+  "top_features": {
+    "Hate Speech": [
+      {
+        "feature": "hoe don",
+        "weight": 3.1586
+      },
+      {
+        "feature": "fag",
+        "weight": 3.1275
+      },
+      {
+        "feature": "bitch",
+        "weight": 3.0695
+      },
+      {
+        "feature": "nig",
+        "weight": 3.0349
+      },
+      {
+        "feature": "spic",
+        "weight": 2.8808
+      },
+      {
+        "feature": "nigg",
+        "weight": 2.8539
+      },
+      {
+        "feature": " nig",
+        "weight": 2.8331
+      },
+      {
+        "feature": " fag",
+        "weight": 2.6986
+      },
+      {
+        "feature": "hate",
+        "weight": 2.5821
+      },
+      {
+        "feature": " nigg",
+        "weight": 2.5292
+      },
+      {
+        "feature": "igg",
+        "weight": 2.46
+      },
+      {
+        "feature": " ni",
+        "weight": 2.4594
+      },
+      {
+        "feature": "white trash",
+        "weight": 2.4315
+      },
+      {
+        "feature": "fags",
+        "weight": 2.4169
+      },
+      {
+        "feature": "eating",
+        "weight": 2.3623
+      },
+      {
+        "feature": "ass",
+        "weight": 2.3357
+      },
+      {
+        "feature": "kill",
+        "weight": 2.3326
+      },
+      {
+        "feature": "agg",
+        "weight": 2.3117
+      },
+      {
+        "feature": " u ",
+        "weight": 2.2639
+      },
+      {
+        "feature": "dumb bitch",
+        "weight": 2.2197
+      }
+    ],
+    "Offensive Language": [
+      {
+        "feature": "bitch",
+        "weight": 4.5432
+      },
+      {
+        "feature": "pussy",
+        "weight": 4.0312
+      },
+      {
+        "feature": "hoes",
+        "weight": 3.793
+      },
+      {
+        "feature": "bitches",
+        "weight": 3.7476
+      },
+      {
+        "feature": " bitc",
+        "weight": 3.6872
+      },
+      {
+        "feature": "bitc",
+        "weight": 3.661
+      },
+      {
+        "feature": "bitch",
+        "weight": 3.6608
+      },
+      {
+        "feature": " bit",
+        "weight": 3.6114
+      },
+      {
+        "feature": "bit",
+        "weight": 3.6002
+      },
+      {
+        "feature": "itch",
+        "weight": 3.5721
+      },
+      {
+        "feature": "itc",
+        "weight": 3.5583
+      },
+      {
+        "feature": "tch",
+        "weight": 3.486
+      },
+      {
+        "feature": "hoe",
+        "weight": 3.3106
+      },
+      {
+        "feature": "shit",
+        "weight": 3.0734
+      },
+      {
+        "feature": " hoe",
+        "weight": 2.9852
+      },
+      {
+        "feature": " bi",
+        "weight": 2.908
+      },
+      {
+        "feature": " ho",
+        "weight": 2.6019
+      },
+      {
+        "feature": "hoe",
+        "weight": 2.3369
+      },
+      {
+        "feature": "itch ",
+        "weight": 2.2458
+      },
+      {
+        "feature": "fuck",
+        "weight": 2.0668
+      }
+    ],
+    "Normal Speech": [
+      {
+        "feature": "bird",
+        "weight": 3.1381
+      },
+      {
+        "feature": "yellow",
+        "weight": 2.3557
+      },
+      {
+        "feature": "ird",
+        "weight": 2.1712
+      },
+      {
+        "feature": "charlie",
+        "weight": 2.0954
+      },
+      {
+        "feature": "mock",
+        "weight": 1.992
+      },
+      {
+        "feature": "bird",
+        "weight": 1.9624
+      },
+      {
+        "feature": "birds",
+        "weight": 1.9623
+      },
+      {
+        "feature": " bir",
+        "weight": 1.9542
+      },
+      {
+        "feature": "sole",
+        "weight": 1.9506
+      },
+      {
+        "feature": " bird",
+        "weight": 1.9454
+      },
+      {
+        "feature": "nip",
+        "weight": 1.8766
+      },
+      {
+        "feature": "bir",
+        "weight": 1.8505
+      },
+      {
+        "feature": "yankees",
+        "weight": 1.7729
+      },
+      {
+        "feature": "jihadi",
+        "weight": 1.7721
+      },
+      {
+        "feature": "oreo",
+        "weight": 1.6758
+      },
+      {
+        "feature": "abo",
+        "weight": 1.5513
+      },
+      {
+        "feature": "thincc",
+        "weight": 1.5074
+      },
+      {
+        "feature": "buys",
+        "weight": 1.4762
+      },
+      {
+        "feature": "log",
+        "weight": 1.4683
+      },
+      {
+        "feature": "nke",
+        "weight": 1.4589
+      }
+    ]
+  }
+}

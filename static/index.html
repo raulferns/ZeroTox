@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ZeroTox: Minimal Forensic NLP Content Moderation Dossier for Instagram Comments.">
+    <title>ZeroTox // NLP Content Moderation Dossier</title>
+    <!-- Typography: Syne (Headings), Plus Jakarta Sans (Body), Space Mono & JetBrains Mono (Data/Metadata) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&family=Syne:wght@700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body class="slate-canvas">
+    <div class="chalk-noise-overlay" aria-hidden="true"></div>
+
+    <div class="dossier-layout">
+
+        <!-- TOP FORENSIC MASTHEAD -->
+        <header class="forensic-masthead">
+            <div class="masthead-left">
+                <div class="case-file-stamp">
+                    <span class="stamp-bracket">[</span>
+                    <span class="stamp-text">EVIDENCE DISPATCH</span>
+                    <span class="stamp-bracket">]</span>
+                </div>
+                <div class="title-block">
+                    <h1 class="main-system-title">ZeroTox <span>AI</span></h1>
+                    <div class="system-sub-heading">NLP HATE SPEECH & FORENSIC MODERATION DOSSIER</div>
+                </div>
+            </div>
+
+            <!-- Forensic System Telemetry Badges -->
+            <div class="masthead-right">
+                <div class="telemetry-stamp font-mono">
+                    <span class="t-key">MODEL:</span>
+                    <span class="t-val">3-Class NLP v1.2</span>
+                </div>
+                <div class="telemetry-stamp stamp-highlight font-mono">
+                    <span class="t-key">ACCURACY:</span>
+                    <span class="t-val">89.6% (0.893 F1)</span>
+                </div>
+                <div class="telemetry-stamp font-mono">
+                    <span class="t-key">BENCHMARK:</span>
+                    <span class="t-val">24.7k Records</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- NAVIGATION TABS -->
+        <nav class="dossier-nav-bar">
+            <div class="nav-case-tag">INVESTIGATION MODULES:</div>
+            <div class="nav-tabs-group">
+                <button class="nav-tab active" data-tab="tab-instagram" id="tab-btn-instagram">
+                    <span class="tab-index">01</span>
+                    <span class="tab-label">Instagram Moderation</span>
+                </button>
+                <button class="nav-tab" data-tab="tab-inspector" id="tab-btn-inspector">
+                    <span class="tab-index">02</span>
+                    <span class="tab-label">Real-Time Inspector</span>
+                </button>
+                <button class="nav-tab" data-tab="tab-batch" id="tab-btn-batch">
+                    <span class="tab-index">03</span>
+                    <span class="tab-label">Batch Ingestion</span>
+                </button>
+                <button class="nav-tab" data-tab="tab-telemetry" id="tab-btn-telemetry">
+                    <span class="tab-index">04</span>
+                    <span class="tab-label">Model Telemetry & Docs</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- MAIN WORKSPACE -->
+        <main class="dossier-workspace">
+
+            <!-- ===================================================================
+                 TAB 1: INSTAGRAM MODERATION DOSSIER
+                 =================================================================== -->
+            <section class="tab-pane active" id="tab-instagram">
+
+                <!-- URL Ingestion Card -->
+                <div class="forensic-card ingest-deck-card">
+                    <div class="card-header-bar">
+                        <div class="card-classification-tag">RECONNAISSANCE TARGET // INPUT TERMINAL</div>
+                        <div class="card-dossier-num">REF: SCRAPE-REQ-2026</div>
+                    </div>
+
+                    <div class="deck-editorial">
+                        <h2 class="editorial-headline">INSTAGRAM COMMENT RECONNAISSANCE</h2>
+                        <p class="editorial-desc">
+                            Input any target Instagram post or reel permalink. The forensic pipeline will extract social
+                            commentary payloads and execute 3-class NLP toxicity classification.
+                        </p>
+                    </div>
+
+                    <!-- Command-Line Style URL Ingest Field -->
+                    <div class="url-interrogate-row">
+                        <div class="terminal-prefix-box">
+                            <span class="terminal-prompt">&gt;</span>
+                            <span class="terminal-label">TARGET_URI:</span>
+                        </div>
+                        <input type="text" id="instagram-url-input" class="forensic-url-field font-mono"
+                            placeholder="Enter Instagram post URL (e.g. https://www.instagram.com/p/C8_TechAI_Keynote/)"
+                            value="https://www.instagram.com/p/C8_TechAI_Keynote/" spellcheck="false">
+                        <button id="btn-scrape-moderate" class="btn-execute-scrape">
+                            <span class="btn-spinner hidden" id="scrape-spinner"></span>
+                            <span class="btn-text">[ SCRAPE & MODERATE ]</span>
+                        </button>
+                    </div>
+
+                    <!-- Verified Case Presets Selector -->
+                    <div class="presets-deck">
+                        <div class="preset-title font-mono">TEST PRESETS:</div>
+                        <div class="preset-chips-wrap" id="preset-chips-container">
+                            <button class="preset-chip active"
+                                data-url="https://www.instagram.com/p/C8_TechAI_Keynote/">
+                                <span class="preset-marker">CASE-01</span>
+                                <span class="preset-desc">Tech Keynote (Mixed Forum)</span>
+                            </button>
+                            <button class="preset-chip" data-url="https://www.instagram.com/p/C7_DerbyChampionship/">
+                                <span class="preset-marker">CASE-02</span>
+                                <span class="preset-desc">Sports Derby (Heated Arguments)</span>
+                            </button>
+                            <button class="preset-chip" data-url="https://www.instagram.com/p/C9_FashionGala2026/">
+                                <span class="preset-marker">CASE-03</span>
+                                <span class="preset-desc">Celebrity Gala (Toxic Trolls)</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scraping Terminal Dispatch Status -->
+                <div id="scrape-status-bar" class="forensic-status-banner hidden">
+                    <div class="status-marker font-mono">[LOG DISPATCH]</div>
+                    <div class="status-msg font-mono" id="scrape-status-text">
+                        INITIATING FORENSIC INGESTION & EXTRACTING COMMENTS...
+                    </div>
+                </div>
+
+                <!-- Forensic Dossier Investigation Layout -->
+                <div id="instagram-results-area" class="results-dossier-grid">
+
+                    <!-- LEFT COLUMN: SUBJECT TARGET DOSSIER -->
+                    <div class="forensic-card subject-dossier-card">
+                        <div class="card-header-bar">
+                            <div class="card-classification-tag">TARGET SUBJECT DOSSIER</div>
+                            <div class="card-dossier-num" id="post-shortcode">REF: C8_TechAI_Keynote</div>
+                        </div>
+
+                        <!-- Subject Profile Header -->
+                        <div class="subject-profile-block">
+                            <div class="subject-avatar-frame" id="post-avatar">📸</div>
+                            <div class="subject-meta-text">
+                                <div class="subject-id-label">AUTHOR HANDLE:</div>
+                                <div class="subject-handle" id="post-author">@techpulse_official</div>
+                                <div class="subject-platform-tag font-mono">Platform: Meta Instagram // Public Post
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Evidence Caption Quote Box -->
+                        <div class="evidence-caption-deck">
+                            <div class="caption-tag-bar font-mono">
+                                <span>PUBLICATION CAPTION:</span>
+                                <span>[DOC-TEXT]</span>
+                            </div>
+                            <blockquote class="caption-quote" id="post-caption">
+                                "Unveiling the future today. Our new neural chip delivers 10x performance while
+                                consuming 40% less energy. Available worldwide this Friday! #tech #ai #innovation"
+                            </blockquote>
+                        </div>
+
+                        <!-- Quantitative Counts Ledger -->
+                        <div class="ledger-metrics-grid">
+                            <div class="ledger-tile">
+                                <div class="ledger-label font-mono">PUBLIC LIKES:</div>
+                                <div class="ledger-val font-mono" id="post-likes">84,210</div>
+                            </div>
+                            <div class="ledger-tile">
+                                <div class="ledger-label font-mono">COMMENTS ANALYZED:</div>
+                                <div class="ledger-val font-mono text-chalk" id="post-total-comments">15</div>
+                            </div>
+                        </div>
+
+                        <div class="card-hairline-sep"></div>
+
+                        <!-- Analog Forensic Severity Meter -->
+                        <div class="analog-severity-deck">
+                            <div class="analog-meter-header">
+                                <div class="meter-title font-mono">TOXIC INTENSITY SEVERITY INDEX</div>
+                                <div class="meter-score font-mono text-crimson" id="threat-score-val">19.5 / 100</div>
+                            </div>
+
+                            <!-- Severity Bar -->
+                            <div class="analog-meter-track">
+                                <div class="meter-gauge-fill" id="threat-meter-fill" style="width: 19.5%;"></div>
+                            </div>
+
+                            <!-- Verdict Stamp -->
+                            <div class="verdict-stamp-wrap">
+                                <div class="forensic-stamp-badge stamp-critical" id="post-status-badge">
+                                    HIGH RISK // HATE SPEECH DETECTED
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- RIGHT COLUMN: 3-CLASS FORENSIC BREAKDOWN & MODERATION DIRECTIVE -->
+                    <div class="forensic-card forensic-breakdown-card">
+                        <div class="card-header-bar">
+                            <div class="card-classification-tag">3-CLASS LINGUISTIC BREAKDOWN</div>
+                            <div class="card-dossier-num">AUDIT REPORT #MOD-77</div>
+                        </div>
+
+                        <!-- 3 Contrasting Evidence Indicators -->
+                        <div class="evidence-indicators-grid">
+
+                            <!-- EXHIBIT A: HATE SPEECH -->
+                            <div class="indicator-block block-hate">
+                                <div class="indicator-header">
+                                    <span class="exhibit-tag font-mono">[EXHIBIT A]</span>
+                                    <span class="indicator-name">Hate Speech</span>
+                                </div>
+                                <div class="indicator-big-count font-mono" id="count-hate">1</div>
+                                <div class="indicator-ratio font-mono" id="percent-hate">6.7% of total</div>
+                                <div class="indicator-rule-line rule-hate"></div>
+                                <div class="indicator-summary">
+                                    Severe prejudice, racial/identity attack, violence incitement.
+                                </div>
+                                <div class="indicator-directive font-mono text-crimson">
+                                    Action: Immediate Strike & Ban
+                                </div>
+                            </div>
+
+                            <!-- EXHIBIT B: OFFENSIVE LANGUAGE -->
+                            <div class="indicator-block block-offensive">
+                                <div class="indicator-header">
+                                    <span class="exhibit-tag font-mono">[EXHIBIT B]</span>
+                                    <span class="indicator-name">Offensive Language</span>
+                                </div>
+                                <div class="indicator-big-count font-mono" id="count-offensive">4</div>
+                                <div class="indicator-ratio font-mono" id="percent-offensive">26.7% of total</div>
+                                <div class="indicator-rule-line rule-offensive"></div>
+                                <div class="indicator-summary">
+                                    Aggressive swearing, vulgar insults, profane hostility.
+                                </div>
+                                <div class="indicator-directive font-mono text-amber">
+                                    Action: Sensitivity Shadow-Mask
+                                </div>
+                            </div>
+
+                            <!-- EXHIBIT C: NORMAL BENIGN SPEECH -->
+                            <div class="indicator-block block-normal">
+                                <div class="indicator-header">
+                                    <span class="exhibit-tag font-mono">[EXHIBIT C]</span>
+                                    <span class="indicator-name">Normal Speech</span>
+                                </div>
+                                <div class="indicator-big-count font-mono" id="count-normal">10</div>
+                                <div class="indicator-ratio font-mono" id="percent-normal">66.7% of total</div>
+                                <div class="indicator-rule-line rule-normal"></div>
+                                <div class="indicator-summary">
+                                    Compliant discourse, product critique, benign praise.
+                                </div>
+                                <div class="indicator-directive font-mono text-slate">
+                                    Action: Cleared for Forum
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Tactile Volume Ratio Bar -->
+                        <div class="volume-ratio-deck">
+                            <div class="ratio-header-bar font-mono">
+                                <span>VOLUME RATIO DISTRIBUTION:</span>
+                                <span class="text-ash" id="proportion-summary">15 AUDIT PAYLOADS</span>
+                            </div>
+                            <div class="forensic-ratio-bar">
+                                <div class="bar-slice slice-hate" id="bar-hate-width" style="width: 6.7%;"
+                                    title="Hate Speech"></div>
+                                <div class="bar-slice slice-offensive" id="bar-offensive-width" style="width: 26.7%;"
+                                    title="Offensive Language"></div>
+                                <div class="bar-slice slice-normal" id="bar-normal-width" style="width: 66.7%;"
+                                    title="Normal Speech"></div>
+                            </div>
+                            <div class="bar-legend-row font-mono">
+                                <span class="legend-entry"><span class="legend-color-box bg-crimson"></span> Hate
+                                    Speech</span>
+                                <span class="legend-entry"><span class="legend-color-box bg-amber"></span> Offensive
+                                    Language</span>
+                                <span class="legend-entry"><span class="legend-color-box bg-slate"></span> Normal
+                                    Speech</span>
+                            </div>
+                        </div>
+
+                        <!-- Official Moderation Protocol Directive Banner -->
+                        <div class="moderation-directive-banner">
+                            <div class="directive-seal-box font-mono">[DIRECTIVE]</div>
+                            <div class="directive-content">
+                                <div class="directive-title font-mono">AUTOMATED CONTENT MODERATION DIRECTIVE:</div>
+                                <div class="directive-text" id="action-plan-text">
+                                    <strong>CRITICAL ACTION:</strong> Found 1 prohibited hate speech violation.
+                                    Recommended automated account purge & reporting. 4 offensive comments placed under
+                                    sensitive content filter.
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- BOTTOM FULL-WIDTH: COMMENT AUDIT STREAM / UNMASKING STREAM -->
+                    <div class="forensic-card unmasking-stream-card">
+                        <div class="card-header-bar">
+                            <div class="card-classification-tag">ITEMIZED COMMENT AUDIT FEED</div>
+                            <div class="card-dossier-num">SECTION 03-B</div>
+                        </div>
+
+                        <!-- Controls Bar -->
+                        <div class="audit-controls-bar">
+                            <!-- Filter Buttons -->
+                            <div class="forensic-filter-tabs">
+                                <button class="filter-btn active" data-filter="all">
+                                    <span>All (</span><strong id="filter-all-cnt">15</strong><span>)</span>
+                                </button>
+                                <button class="filter-btn filter-hate" data-filter="Hate Speech">
+                                    <span>Hate Speech (</span><strong id="filter-hate-cnt">1</strong><span>)</span>
+                                </button>
+                                <button class="filter-btn filter-offensive" data-filter="Offensive Language">
+                                    <span>Offensive (</span><strong id="filter-off-cnt">4</strong><span>)</span>
+                                </button>
+                                <button class="filter-btn filter-normal" data-filter="Normal Speech">
+                                    <span>Normal (</span><strong id="filter-norm-cnt">10</strong><span>)</span>
+                                </button>
+                            </div>
+
+                            <!-- Search & Export -->
+                            <div class="audit-action-tools">
+                                <div class="forensic-search-input-wrap">
+                                    <span class="search-prompt font-mono">FILTER:</span>
+                                    <input type="text" id="comment-search-input" class="forensic-search-field font-mono"
+                                        placeholder="Search author handle or comment text...">
+                                </div>
+                                <button id="btn-export-csv" class="btn-export-dossier">
+                                    <span class="font-mono">[ Export CSV ]</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Itemized Audit Stream -->
+                        <div class="unmasking-stream-table" id="comments-stream-container">
+                            <!-- Injected dynamically by app.js -->
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- ===================================================================
+                 TAB 2: REAL-TIME INTERROGATOR
+                 =================================================================== -->
+            <section class="tab-pane" id="tab-inspector">
+                <div class="interrogator-grid">
+
+                    <!-- Left: Interrogation Dossier Input -->
+                    <div class="forensic-card">
+                        <div class="card-header-bar">
+                            <div class="card-classification-tag">INTERROGATION SANDBOX // TEXT INPUT</div>
+                            <div class="card-dossier-num">TERMINAL #02</div>
+                        </div>
+
+                        <div class="interrogate-heading-deck">
+                            <h2 class="editorial-headline">SINGLE COMMENT INTERROGATION</h2>
+                            <p class="editorial-desc">
+                                Type or paste any raw social media comment. The NLP engine will calculate exact 3-class
+                                probabilities, identify abusive token triggers, and issue a moderation recommendation.
+                            </p>
+                        </div>
+
+                        <div class="interrogate-input-box">
+                            <div class="textarea-header font-mono">
+                                <span>PAYLOAD ENTRY SHEET:</span>
+                                <span class="char-count" id="single-char-count">56 CHARACTERS</span>
+                            </div>
+                            <textarea id="single-comment-input" rows="5" class="forensic-textarea"
+                                placeholder="Input target statement for linguistic interrogation...">shut the fuck up you stupid bitch this is absolute trash</textarea>
+                        </div>
+
+                        <div class="interrogate-action-bar">
+                            <button id="btn-inspect-comment" class="btn-execute-scrape">
+                                <span class="btn-text">[ EXECUTE INTERROGATION ]</span>
+                            </button>
+                        </div>
+
+                        <!-- Quick Test Scenarios -->
+                        <div class="scenarios-deck">
+                            <div class="scenarios-title font-mono">TEST SCENARIOS:</div>
+                            <div class="scenarios-list">
+                                <button class="scenario-btn font-mono"
+                                    data-text="Congratulations on the new release! The interface and performance are brilliant.">
+                                    <span class="scen-id">[SCENARIO A]</span> Benign Community Praise
+                                </button>
+                                <button class="scenario-btn font-mono"
+                                    data-text="shut the fuck up you ugly ass bitch nobody asked for your opinion">
+                                    <span class="scen-id text-amber">[SCENARIO B]</span> Aggressive Vulgar Expletives
+                                </button>
+                                <button class="scenario-btn font-mono"
+                                    data-text="all of these filthy immigrants should be eliminated and wiped out">
+                                    <span class="scen-id text-crimson">[SCENARIO C]</span> Violent Hate Speech & Slurs
+                                </button>
+                                <button class="scenario-btn font-mono"
+                                    data-text="Fix your broken customer service before launching more overpriced products.">
+                                    <span class="scen-id">[SCENARIO D]</span> Constructive Product Critique
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Interrogation Findings Ledger -->
+                    <div class="forensic-card" id="inspector-output-card">
+                        <div class="card-header-bar">
+                            <div class="card-classification-tag">INTERROGATION VERDICT // REPORT</div>
+                            <div class="card-dossier-num">FINDINGS LOG</div>
+                        </div>
+
+                        <!-- Verdict Stamped Banner -->
+                        <div class="interrogate-verdict-banner" id="inspector-verdict-banner">
+                            <div class="verdict-primary-col">
+                                <div class="verdict-meta-title font-mono">PRIMARY LINGUISTIC CLASSIFICATION:</div>
+                                <div class="verdict-stamp-text" id="inspector-label">Offensive Language</div>
+                            </div>
+                            <div class="verdict-secondary-col font-mono">
+                                <div class="conf-line">Confidence: <strong id="inspector-confidence">94.2%</strong>
+                                </div>
+                                <div class="action-stamp-pill" id="inspector-action-pill">[SHADOW-FILTER]</div>
+                            </div>
+                        </div>
+
+                        <!-- Multi-Class Probability Bars -->
+                        <div class="clinical-probabilities-deck">
+                            <div class="deck-sub-title font-mono">CALIBRATED MULTI-CLASS PROBABILITIES:</div>
+
+                            <div class="clinical-bar-row">
+                                <div class="bar-label-group font-mono">
+                                    <span class="text-crimson font-bold">Hate Speech</span>
+                                    <span class="text-ash" id="proba-hate-pct">4.2%</span>
+                                </div>
+                                <div class="clinical-track">
+                                    <div class="clinical-fill fill-hate" id="proba-hate-fill" style="width: 4.2%;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="clinical-bar-row">
+                                <div class="bar-label-group font-mono">
+                                    <span class="text-amber font-bold">Offensive Language</span>
+                                    <span class="text-ash" id="proba-off-pct">94.2%</span>
+                                </div>
+                                <div class="clinical-track">
+                                    <div class="clinical-fill fill-offensive" id="proba-off-fill" style="width: 94.2%;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="clinical-bar-row">
+                                <div class="bar-label-group font-mono">
+                                    <span class="text-slate font-bold">Normal Speech</span>
+                                    <span class="text-ash" id="proba-norm-pct">1.6%</span>
+                                </div>
+                                <div class="clinical-track">
+                                    <div class="clinical-fill fill-normal" id="proba-norm-fill" style="width: 1.6%;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Threat & Polarity Readouts -->
+                        <div class="readout-duo-grid font-mono">
+                            <div class="readout-cell">
+                                <div class="readout-label">THREAT SEVERITY SCORE:</div>
+                                <div class="readout-val text-amber" id="inspector-severity">48.5 / 100</div>
+                            </div>
+                            <div class="readout-cell">
+                                <div class="readout-label">SENTIMENT POLARITY:</div>
+                                <div class="readout-val text-ash" id="inspector-polarity">-0.55 (NEGATIVE)</div>
+                            </div>
+                        </div>
+
+                        <!-- Token Heatmap & Attribution Flow -->
+                        <div class="token-attribution-deck">
+                            <div class="deck-sub-title font-mono">TOKEN ATTRIBUTION & EVIDENCE WEIGHTS:</div>
+                            <div class="tokens-evidence-flow" id="inspector-tokens-flow">
+                                <!-- Populated dynamically by app.js -->
+                            </div>
+                            <div class="token-forensic-legend font-mono">
+                                <span class="t-key-item"><span class="censor-tag tag-hate">WORD</span> Hate
+                                    Trigger</span>
+                                <span class="t-key-item"><span class="censor-tag tag-offensive">WORD</span> Offensive
+                                    Trigger</span>
+                                <span class="t-key-item"><span class="censor-tag tag-normal">WORD</span> Benign
+                                    Marker</span>
+                            </div>
+                        </div>
+
+                        <!-- Policy Explanation Box -->
+                        <div class="censor-directive-box" id="inspector-explanation">
+                            [DIRECTIVE RATIONALE]: Comment contains aggressive profanity and derogatory language.
+                            Recommend applying a sensitivity warning filter.
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ===================================================================
+                 TAB 3: BATCH INGESTION TERMINAL
+                 =================================================================== -->
+            <section class="tab-pane" id="tab-batch">
+                <div class="batch-workspace-grid">
+                    <div class="forensic-card">
+                        <div class="card-header-bar">
+                            <div class="card-classification-tag">BULK PAYLOAD INGESTION // SOCIAL STREAM</div>
+                            <div class="card-dossier-num">BATCH TERMINAL</div>
+                        </div>
+
+                        <div class="editorial-headline">MASS CONTENT MODERATION STREAM</div>
+                        <p class="editorial-desc">
+                            Input multiple comment payloads (one entry per line) for vectorized multi-class
+                            categorization and aggregated risk profiling across high-traffic discussion threads.
+                        </p>
+
+                        <div class="batch-textarea-box">
+                            <textarea id="batch-input-area" rows="8" class="forensic-textarea font-mono"
+                                placeholder="Paste comment payloads (one line per record)...">You guys are an incredible team, congratulations on the launch!
+kill yourself you stupid bitch nobody wants you here
+What an unbelievable achievement for science.
+all these disgusting immigrants need to be exterminated
+shut the fuck up clown company stop lying to customers
+Does this support Python 3.12 and CUDA on Windows?
+ugly whore looks like a plastic doll with zero talent
+Inspiring vision, can't wait to test the API next week!</textarea>
+                        </div>
+
+                        <div class="batch-btn-row">
+                            <button id="btn-run-batch" class="btn-execute-scrape">
+                                <span class="btn-text">[ EXECUTE BATCH MODERATION ]</span>
+                            </button>
+                            <button id="btn-load-sample-batch" class="btn-secondary-dossier font-mono">
+                                [ Load Sample Comments ]
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Batch Results Output Area -->
+                    <div id="batch-results-wrapper" class="batch-results-deck">
+                        <!-- Populated dynamically by app.js -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===================================================================
+                 TAB 4: MODEL TELEMETRY & AUDIT DOCS
+                 =================================================================== -->
+            <section class="tab-pane" id="tab-telemetry">
+                <div class="telemetry-dossier-grid">
+
+                    <!-- Left: Validation Benchmarks Table -->
+                    <div class="forensic-card">
+                        <div class="card-header-bar">
+                            <div class="card-classification-tag">HOLDOUT VALIDATION AUDIT // EMPIRICAL BENCHMARKS</div>
+                            <div class="card-dossier-num">AUDIT REPORT 2026</div>
+                        </div>
+
+                        <div class="editorial-headline">3-CLASS HOLDOUT PERFORMANCE MATRIX</div>
+                        <p class="editorial-desc">
+                            Stratified holdout validation on 3,718 social media comments (15% split) from the Davidson
+                            et al. benchmark dataset.
+                        </p>
+
+                        <div class="forensic-table-wrap">
+                            <table class="forensic-audit-table font-mono">
+                                <thead>
+                                    <tr>
+                                        <th>CLASSIFICATION TARGET</th>
+                                        <th>PRECISION</th>
+                                        <th>RECALL</th>
+                                        <th>F1-SCORE</th>
+                                        <th>SUPPORT</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="metrics-table-body">
+                                    <tr>
+                                        <td><span class="stamp-pill stamp-hate">HATE SPEECH</span></td>
+                                        <td>46.1%</td>
+                                        <td>36.0%</td>
+                                        <td class="text-crimson font-bold">0.404</td>
+                                        <td>214</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="stamp-pill stamp-offensive">OFFENSIVE LANGUAGE</span></td>
+                                        <td>93.4%</td>
+                                        <td>94.2%</td>
+                                        <td class="text-amber font-bold">0.938</td>
+                                        <td>2,879</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="stamp-pill stamp-normal">NORMAL SPEECH</span></td>
+                                        <td>84.0%</td>
+                                        <td>87.2%</td>
+                                        <td class="text-slate font-bold">0.856</td>
+                                        <td>625</td>
+                                    </tr>
+                                    <tr class="table-summary-row">
+                                        <td><strong>WEIGHTED METRIC</strong></td>
+                                        <td class="font-bold">89.1%</td>
+                                        <td class="font-bold">89.6%</td>
+                                        <td class="text-chalk font-bold">0.893</td>
+                                        <td>3,718</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Confusion Matrix Grid -->
+                        <div class="confusion-matrix-deck">
+                            <div class="deck-sub-title font-mono">CONFUSION MATRIX (HOLDOUT TEST SET):</div>
+                            <div class="confusion-matrix-grid font-mono" id="confusion-matrix-container">
+                                <!-- Populated dynamically by app.js -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Dataset Architecture & Learned Features -->
+                    <div class="forensic-card">
+                        <div class="card-header-bar">
+                            <div class="card-classification-tag">CORPUS COMPOSITION // FEATURE ATTRIBUTION LEDGER</div>
+                            <div class="card-dossier-num">CORPUS STATS</div>
+                        </div>
+
+                        <div class="editorial-headline">DATASET RECORD ARCHIVE</div>
+                        <p class="editorial-desc">
+                            Dual-representation feature union combining sublinear Word TF-IDF (14,000 features) and
+                            Character N-Grams (18,000 subwords) with calibrated L-BFGS multi-class solver.
+                        </p>
+
+                        <div class="corpus-stats-ledger font-mono">
+                            <div class="corpus-row">
+                                <span class="c-key">TOTAL BENCHMARK CORPUS:</span>
+                                <span class="c-val font-bold">24,783 Labeled Items</span>
+                            </div>
+                            <div class="corpus-row">
+                                <span class="c-key">TRAINING PARTITION (85%):</span>
+                                <span class="c-val">21,064 Records</span>
+                            </div>
+                            <div class="corpus-row">
+                                <span class="c-key">VALIDATION PARTITION (15%):</span>
+                                <span class="c-val">3,718 Records</span>
+                            </div>
+                            <div class="corpus-row">
+                                <span class="c-key">VECTORIZATION PIPELINE:</span>
+                                <span class="c-val text-chalk">Word TF-IDF (1-3) + Char TF-IDF (3-5)</span>
+                            </div>
+                        </div>
+
+                        <div class="top-vocabulary-deck">
+                            <div class="deck-sub-title font-mono">DISTINCTIVE FEATURE VOCABULARY:</div>
+
+                            <div class="feature-ledger-group">
+                                <div class="feature-category-label font-mono text-crimson">[HATE SPEECH ATTRIBUTION
+                                    WEIGHTS]:</div>
+                                <div class="feature-chips-deck" id="features-hate-chips">
+                                    <!-- Populated dynamically -->
+                                </div>
+                            </div>
+
+                            <div class="feature-ledger-group">
+                                <div class="feature-category-label font-mono text-amber">[OFFENSIVE LANGUAGE ATTRIBUTION
+                                    WEIGHTS]:</div>
+                                <div class="feature-chips-deck" id="features-offensive-chips">
+                                    <!-- Populated dynamically -->
+                                </div>
+                            </div>
+
+                            <div class="feature-ledger-group">
+                                <div class="feature-category-label font-mono text-slate">[NORMAL SPEECH ATTRIBUTION
+                                    WEIGHTS]:</div>
+                                <div class="feature-chips-deck" id="features-normal-chips">
+                                    <!-- Populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FORENSIC FOOTER TELEMETRY BAR -->
+        <footer class="forensic-footer">
+            <div class="footer-left font-mono">
+                <span>ZeroTox &bull; Forensic Social Media Moderation Suite</span>
+            </div>
+            <div class="footer-right font-mono">
+                <span>Latency: ~2.4ms/record &bull; 3-Class NLP Pipeline</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Modal: Detailed Evidence Interrogation -->
+    <div id="comment-modal" class="modal-backdrop hidden">
+        <div class="forensic-modal-dialog">
+            <div class="modal-header-bar">
+                <div class="modal-title-stamp font-mono">[NLP DECONSTRUCTION AUDIT]</div>
+                <button id="btn-close-modal" class="btn-close-forensic font-mono">[X]</button>
+            </div>
+            <div class="modal-body-deck" id="modal-content-area">
+                <!-- Injected dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+
+</html>
