@@ -1,6 +1,6 @@
 /**
- * ZeroTox // FORENSIC DOSSIER & INVESTIGATIVE EDITORIAL LOGIC
- * Automated NLP Hate Speech & Social Media Moderation
+ * ZeroTox // Intelligent Social Media Content Moderation
+ * Frontend Application Logic
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnScrapeModerate.addEventListener('click', () => {
         const url = inputInstagramUrl.value.trim();
         if (!url) {
-            alert('Please input a valid target Instagram URI.');
+            alert('Please enter a valid Instagram URL.');
             return;
         }
         runInstagramScrapeAndModeration(url);
@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function runInstagramScrapeAndModeration(url) {
         setScrapingLoading(true);
         scrapeStatusBar.classList.remove('hidden');
-        scrapeStatusText.innerHTML = `CONNECTING TO RECONNAISSANCE STREAM FOR: <code>${escapeHtml(url)}</code>...`;
+        scrapeStatusText.innerHTML = `Analyzing comments for: <code>${escapeHtml(url)}</code>...`;
 
         try {
             const response = await fetch('/api/scrape-instagram', {
@@ -158,14 +158,14 @@ document.addEventListener('DOMContentLoaded', () => {
             state.currentScrapedData = data;
             renderInstagramResults(data);
 
-            scrapeStatusText.innerHTML = `✓ FORENSIC INGESTION COMPLETE: ${escapeHtml(data.post_info.status_message)}`;
+            scrapeStatusText.innerHTML = `✓ Complete: ${escapeHtml(data.post_info.status_message || 'Comments processed successfully.')}`;
             setTimeout(() => {
                 scrapeStatusBar.classList.add('hidden');
-            }, 6000);
+            }, 4000);
 
         } catch (err) {
-            scrapeStatusText.innerHTML = `⚠️ FORENSIC INTERRUPT: ${escapeHtml(err.message)}`;
-            alert(`Scraping Interruption: ${err.message}`);
+            scrapeStatusText.innerHTML = `⚠️ Error: ${escapeHtml(err.message)}`;
+            alert(`Error: ${err.message}`);
         } finally {
             setScrapingLoading(false);
         }
@@ -190,8 +190,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Post Metadata
         postAuthor.textContent = post.author ? `@${post.author}` : '@instagram_user';
-        postShortcode.textContent = `REF: ${post.shortcode}`;
-        postCaption.textContent = `"${post.caption || 'No publication caption recorded.'}"`;
+        postShortcode.textContent = `${post.shortcode}`;
+        postCaption.textContent = `"${post.caption || 'No caption provided.'}"`;
         postLikes.textContent = Number(post.likes_count || 0).toLocaleString();
         postTotalComments.textContent = summary.total_comments;
 
@@ -211,30 +211,30 @@ document.addEventListener('DOMContentLoaded', () => {
         const pcts = summary.percentages;
 
         countHate.textContent = counts['Hate Speech'] || 0;
-        percentHate.textContent = `${pcts['Hate Speech'] || 0}% OF TOTAL`;
+        percentHate.textContent = `${pcts['Hate Speech'] || 0}% of total`;
 
         countOffensive.textContent = counts['Offensive Language'] || 0;
-        percentOffensive.textContent = `${pcts['Offensive Language'] || 0}% OF TOTAL`;
+        percentOffensive.textContent = `${pcts['Offensive Language'] || 0}% of total`;
 
         countNormal.textContent = counts['Normal Speech'] || 0;
-        percentNormal.textContent = `${pcts['Normal Speech'] || 0}% OF TOTAL`;
+        percentNormal.textContent = `${pcts['Normal Speech'] || 0}% of total`;
 
         // Proportion Ratio Bar
         barHateWidth.style.width = `${pcts['Hate Speech'] || 0}%`;
         barOffensiveWidth.style.width = `${pcts['Offensive Language'] || 0}%`;
         barNormalWidth.style.width = `${pcts['Normal Speech'] || 0}%`;
-        proportionSummary.textContent = `${summary.total_comments} AUDIT PAYLOADS`;
+        proportionSummary.textContent = `${summary.total_comments} Comments`;
 
         // Moderation Directive Plan
         const hateCount = counts['Hate Speech'] || 0;
         const offCount = counts['Offensive Language'] || 0;
         let planHtml = "";
         if (hateCount > 0) {
-            planHtml = `<strong>CRITICAL DIRECTIVE:</strong> Found ${hateCount} prohibited hate speech violation(s). Recommended automated account purge & reporting. ${offCount} offensive comments placed under sensitive content filter.`;
+            planHtml = `<strong>Recommended Action:</strong> Found ${hateCount} hate speech violation(s). Recommended comment removal & user warning. ${offCount} offensive comments placed under sensitive content filter.`;
         } else if (offCount > 0) {
-            planHtml = `<strong>ELEVATED WARNING:</strong> Thread contains ${offCount} offensive/profane statements. Enforce sensitivity shadow-mask protocol on comments forum.`;
+            planHtml = `<strong>Recommended Action:</strong> Discussion contains ${offCount} offensive or profane comments. Apply sensitivity filter to protect readers.`;
         } else {
-            planHtml = `<strong>CLEARED FOR FORUM:</strong> All ${summary.total_comments} comments comply with community moderation standards. No punitive sanctions required.`;
+            planHtml = `<strong>Approved:</strong> All ${summary.total_comments} comments comply with community moderation guidelines.`;
         }
         actionPlanText.innerHTML = planHtml;
 
@@ -260,8 +260,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (filtered.length === 0) {
             commentsStreamContainer.innerHTML = `
-                <div style="text-align:center; padding: 36px; color: var(--ash-gray); font-family: var(--font-mono); font-size: 12px;">
-                    [NO EVIDENCE RECORDS MATCHING QUERY FILTERS]
+                <div style="text-align:center; padding: 36px; color: var(--text-muted); font-size: 13px;">
+                    No comments match the selected filter.
                 </div>
             `;
             return;
@@ -275,14 +275,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const pillClass = c.label === 'Hate Speech' ? 'pill-hate' : (c.label === 'Offensive Language' ? 'pill-offensive' : 'pill-normal');
 
             const text = c.raw_text || c.text || '';
-            const author = c.author || 'suspect_user';
-            const logNum = String(idx + 1).padStart(3, '0');
+            const author = c.author || 'anonymous_user';
+            const logNum = String(idx + 1).padStart(2, '0');
 
-            // Format verdict label
-            let verdictStamp = `[${escapeHtml(c.label).toUpperCase()}]`;
-            if (c.label === 'Hate Speech') verdictStamp = `[SEV-1: HATE]`;
-            else if (c.label === 'Offensive Language') verdictStamp = `[WARN: OFFENSIVE]`;
-            else verdictStamp = `[CLEARED: BENIGN]`;
+            // Format label text
+            const verdictStamp = escapeHtml(c.label);
 
             // Severity color class
             const sevColor = c.label === 'Hate Speech' ? 'text-crimson' : (c.label === 'Offensive Language' ? 'text-amber' : 'text-slate');
@@ -292,17 +289,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="c-avatar font-mono">#${logNum}</div>
                     <div class="c-author-name" title="@${escapeHtml(author)}">@${escapeHtml(author)}</div>
                 </div>
-                <div class="c-text-content font-mono">
+                <div class="c-text-content">
                     ${highlightSensitiveTokens(text, c.tokens)}
                 </div>
                 <div>
                     <span class="class-pill ${pillClass}">${verdictStamp}</span>
                 </div>
                 <div class="c-severity-badge font-mono ${sevColor}">
-                    SEV: ${c.severity_score}
+                    Score: ${c.severity_score}
                 </div>
                 <div>
-                    <button class="c-action-btn font-mono" data-comment-id="${c.id || ''}">[DECONSTRUCT]</button>
+                    <button class="c-action-btn" data-comment-id="${c.id || ''}">Inspect</button>
                 </div>
             `;
 
@@ -352,7 +349,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Export CSV
     btnExportCsv.addEventListener('click', async () => {
         if (!state.currentScrapedData || !state.currentScrapedData.comments) {
-            alert('No evidence records available to export.');
+            alert('No comments available to export.');
             return;
         }
 
@@ -371,7 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const a = document.createElement('a');
             a.style.display = 'none';
             a.href = url;
-            a.download = `dossier_audit_${state.currentScrapedData.post_info.shortcode || 'records'}.csv`;
+            a.download = `moderation_report_${state.currentScrapedData.post_info.shortcode || 'comments'}.csv`;
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);
@@ -381,19 +378,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // =================================================================
-    // TAB 2: REAL-TIME INTERROGATOR
+    // TAB 2: SINGLE COMMENT INSPECTOR
     // =================================================================
     btnInspectComment.addEventListener('click', runSingleCommentInspection);
 
     singleCommentInput.addEventListener('input', () => {
-        singleCharCount.textContent = `${singleCommentInput.value.length} CHARACTERS`;
+        singleCharCount.textContent = `${singleCommentInput.value.length} characters`;
     });
 
     sampleChips.forEach(chip => {
         chip.addEventListener('click', () => {
             const sampleText = chip.getAttribute('data-text');
             singleCommentInput.value = sampleText;
-            singleCharCount.textContent = `${sampleText.length} CHARACTERS`;
+            singleCharCount.textContent = `${sampleText.length} characters`;
             runSingleCommentInspection();
         });
     });
@@ -401,7 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function runSingleCommentInspection() {
         const text = singleCommentInput.value.trim();
         if (!text) {
-            alert('Please input a text payload to interrogate.');
+            alert('Please enter a comment to analyze.');
             return;
         }
 
@@ -412,24 +409,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({ text: text })
             });
 
-            if (!response.ok) throw new Error('API interrogation failed');
+            if (!response.ok) throw new Error('API analysis failed');
             const data = await response.json();
             renderInspectorResults(data);
 
         } catch (err) {
-            alert('Interrogation Error: ' + err.message);
+            alert('Analysis Error: ' + err.message);
         }
     }
 
     function renderInspectorResults(res) {
-        inspectorLabel.textContent = res.label.toUpperCase();
+        inspectorLabel.textContent = res.label;
         inspectorLabel.className = 'verdict-stamp-text ' + (
             res.label === 'Hate Speech' ? 'text-crimson' : (res.label === 'Offensive Language' ? 'text-amber' : 'text-slate')
         );
 
         inspectorConfidence.textContent = `${(res.confidence * 100).toFixed(1)}%`;
-        inspectorActionPill.textContent = `[${res.action_badge.toUpperCase()}]`;
-        inspectorActionPill.className = 'action-stamp-pill font-mono ' + (
+        inspectorActionPill.textContent = res.action_badge;
+        inspectorActionPill.className = 'action-stamp-pill ' + (
             res.label === 'Hate Speech' ? 'badge-critical' : (res.label === 'Offensive Language' ? 'badge-elevated' : 'badge-safe')
         );
 
@@ -450,12 +447,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Threat Severity & Polarity
         inspectorSeverity.textContent = `${res.severity_score} / 100`;
-        inspectorSeverity.className = 'readout-val ' + (
+        inspectorSeverity.className = 'readout-val font-mono ' + (
             res.label === 'Hate Speech' ? 'text-crimson' : (res.label === 'Offensive Language' ? 'text-amber' : 'text-slate')
         );
 
         const pol = res.sentiment.polarity;
-        const polLabel = pol > 0.1 ? '(POSITIVE)' : (pol < -0.1 ? '(NEGATIVE)' : '(NEUTRAL)');
+        const polLabel = pol > 0.1 ? '(Positive)' : (pol < -0.1 ? '(Negative)' : '(Neutral)');
         inspectorPolarity.textContent = `${pol} ${polLabel}`;
 
         // Token Heatmap Flow
@@ -467,24 +464,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     tok.type === 'offensive' ? 'tag-offensive' : (tok.type === 'normal' ? 'tag-normal' : '')
                 );
                 span.className = `censor-tag font-mono ${badgeClass}`;
-                span.textContent = tok.word + (tok.weight ? ` [Δ+${tok.weight}]` : '');
+                span.textContent = tok.word + (tok.weight ? ` (+${tok.weight})` : '');
                 inspectorTokensFlow.appendChild(span);
             });
         } else {
-            inspectorTokensFlow.innerHTML = '<span class="text-ash font-mono">[NO ABERRANT TOKENS DETECTED]</span>';
+            inspectorTokensFlow.innerHTML = '<span class="text-ash">No abusive keywords detected.</span>';
         }
 
         // Policy Explanation
-        inspectorExplanation.textContent = `[DIRECTIVE RATIONALE]: ${res.explanation}`;
+        inspectorExplanation.textContent = res.explanation;
     }
 
     // =================================================================
-    // TAB 3: BATCH INGESTION TERMINAL
+    // TAB 3: BATCH MODERATION
     // =================================================================
     btnRunBatch.addEventListener('click', async () => {
         const text = batchInputArea.value.trim();
         if (!text) {
-            alert('Please paste comment records to moderate.');
+            alert('Please paste comments to analyze.');
             return;
         }
 
@@ -492,7 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (lines.length === 0) return;
 
         btnRunBatch.disabled = true;
-        btnRunBatch.querySelector('.btn-text').textContent = '[ PROCESSING BATCH STREAM... ]';
+        btnRunBatch.querySelector('.btn-text').textContent = 'Analyzing Batch...';
 
         try {
             const response = await fetch('/api/analyze-batch', {
@@ -509,7 +506,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Batch Processing Error: ' + err.message);
         } finally {
             btnRunBatch.disabled = false;
-            btnRunBatch.querySelector('.btn-text').textContent = '[ EXECUTE BATCH MODERATION ]';
+            btnRunBatch.querySelector('.btn-text').textContent = 'Analyze Batch';
         }
     });
 
@@ -522,7 +519,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "What a ridiculous buggy app, fix your awful servers",
             "kill yourself you dumbass nobody cares about your stupid product",
             "Does this model support real-time token explainability out of the box?",
-            "fucking nigger scum get out of here right now",
+            "fucking scum get out of here right now",
             "Clean and elegant design. Will definitely star this repository on GitHub!"
         ].join('\n');
         btnRunBatch.click();
@@ -532,25 +529,25 @@ document.addEventListener('DOMContentLoaded', () => {
         batchResultsWrapper.innerHTML = `
             <div class="forensic-card" style="margin-top: 14px;">
                 <div class="card-header-bar">
-                    <div class="card-classification-tag">BATCH EVIDENCE AUDIT LEDGER</div>
-                    <div class="card-dossier-num">${data.total_comments} PAYLOADS PROCESSED</div>
+                    <div class="card-classification-tag">Batch Summary</div>
+                    <div class="card-dossier-num">${data.total_comments} Comments Processed</div>
                 </div>
 
                 <div class="evidence-indicators-grid" style="margin-bottom: 16px;">
                     <div class="indicator-block block-hate">
-                        <div class="indicator-header font-mono"><span>[HATE SPEECH]</span></div>
+                        <div class="indicator-header"><span>Hate Speech</span></div>
                         <div class="indicator-big-count font-mono">${data.summary_counts['Hate Speech']}</div>
-                        <div class="indicator-ratio font-mono">${data.percentages['Hate Speech']}% OF BATCH</div>
+                        <div class="indicator-ratio font-mono">${data.percentages['Hate Speech']}% of batch</div>
                     </div>
                     <div class="indicator-block block-offensive">
-                        <div class="indicator-header font-mono"><span>[OFFENSIVE LANGUAGE]</span></div>
+                        <div class="indicator-header"><span>Offensive Language</span></div>
                         <div class="indicator-big-count font-mono">${data.summary_counts['Offensive Language']}</div>
-                        <div class="indicator-ratio font-mono">${data.percentages['Offensive Language']}% OF BATCH</div>
+                        <div class="indicator-ratio font-mono">${data.percentages['Offensive Language']}% of batch</div>
                     </div>
                     <div class="indicator-block block-normal">
-                        <div class="indicator-header font-mono"><span>[NORMAL BENIGN]</span></div>
+                        <div class="indicator-header"><span>Normal Speech</span></div>
                         <div class="indicator-big-count font-mono">${data.summary_counts['Normal Speech']}</div>
-                        <div class="indicator-ratio font-mono">${data.percentages['Normal Speech']}% OF BATCH</div>
+                        <div class="indicator-ratio font-mono">${data.percentages['Normal Speech']}% of batch</div>
                     </div>
                 </div>
 
@@ -563,12 +560,12 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="comment-row-card ${rowClass}">
                                 <div class="c-author-group">
                                     <div class="c-avatar font-mono">#${c.id}</div>
-                                    <div class="c-author-name">RECORD-${c.id}</div>
+                                    <div class="c-author-name">Item ${c.id}</div>
                                 </div>
-                                <div class="c-text-content font-mono">${escapeHtml(c.raw_text || c.text)}</div>
-                                <div><span class="class-pill ${pillClass}">[${escapeHtml(c.label).toUpperCase()}]</span></div>
-                                <div class="c-severity-badge font-mono ${sevColor}">SEV: ${c.severity_score}</div>
-                                <div><span class="font-mono" style="font-size:10px; color:var(--ash-gray);">${escapeHtml(c.action_badge)}</span></div>
+                                <div class="c-text-content">${escapeHtml(c.raw_text || c.text)}</div>
+                                <div><span class="class-pill ${pillClass}">${escapeHtml(c.label)}</span></div>
+                                <div class="c-severity-badge font-mono ${sevColor}">Score: ${c.severity_score}</div>
+                                <div><span class="font-mono" style="font-size:11px; color:var(--text-muted);">${escapeHtml(c.action_badge)}</span></div>
                             </div>
                         `;
         }).join('')}
@@ -578,7 +575,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // =================================================================
-    // TAB 4: MODEL TELEMETRY & AUDIT DOCS
+    // TAB 4: MODEL TELEMETRY & METRICS
     // =================================================================
     async function loadModelTelemetry() {
         try {
@@ -599,7 +596,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const cmContainer = document.getElementById('confusion-matrix-container');
         cmContainer.innerHTML = '';
 
-        const headers = ['', 'PRED HATE', 'PRED OFF', 'PRED NORM'];
+        const headers = ['', 'Pred: Hate', 'Pred: Offensive', 'Pred: Normal'];
         headers.forEach(h => {
             const cell = document.createElement('div');
             cell.className = 'matrix-cell matrix-header font-mono';
@@ -607,7 +604,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cmContainer.appendChild(cell);
         });
 
-        const rowLabels = ['TRUE HATE', 'TRUE OFF', 'TRUE NORM'];
+        const rowLabels = ['True: Hate', 'True: Offensive', 'True: Normal'];
         const matrix = data.confusion_matrix;
 
         for (let r = 0; r < 3; r++) {
@@ -640,13 +637,13 @@ document.addEventListener('DOMContentLoaded', () => {
         features.slice(0, 16).forEach(f => {
             const span = document.createElement('span');
             span.className = 'feat-chip font-mono';
-            span.textContent = `${f.feature} [+${f.weight}]`;
+            span.textContent = `${f.feature} (+${f.weight})`;
             container.appendChild(span);
         });
     }
 
     // =================================================================
-    // MODAL HANDLERS: DETAILED EVIDENCE INTERROGATION
+    // MODAL HANDLERS: DETAILED COMMENT INSPECTION
     // =================================================================
     function showCommentDetailModal(c) {
         const text = c.raw_text || c.text || '';
@@ -655,35 +652,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
         modalContentArea.innerHTML = `
             <div style="margin-bottom: 16px;">
-                <div class="font-mono" style="font-size: 10px; color: var(--ash-gray); margin-bottom: 4px;">RAW EVIDENCE TEXT PAYLOAD:</div>
-                <div style="background: var(--surface-sunken); padding: 12px 14px; border: 1px solid var(--border-chalk); font-size: 13px; font-family: var(--font-mono); line-height: 1.45;">
+                <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600;">Comment Text:</div>
+                <div style="background: var(--surface-sunken); padding: 14px; border: 1px solid var(--border-subtle); font-size: 14px; line-height: 1.5; border-radius: 4px;">
                     ${highlightSensitiveTokens(text, c.tokens)}
                 </div>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
-                <div style="background: var(--surface-sunken); padding: 10px 12px; border: 1px solid var(--border-chalk);">
-                    <div class="font-mono" style="font-size: 9.5px; color: var(--ash-gray); margin-bottom: 4px;">LINGUISTIC VERDICT:</div>
-                    <span class="class-pill ${pillClass}">[${escapeHtml(c.label).toUpperCase()}]</span>
-                    <span class="font-mono" style="font-size: 11px; margin-left: 8px;">CONF: ${(c.confidence * 100).toFixed(1)}%</span>
+                <div style="background: var(--surface-sunken); padding: 12px; border: 1px solid var(--border-subtle); border-radius: 4px;">
+                    <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600;">Classification:</div>
+                    <span class="class-pill ${pillClass}">${escapeHtml(c.label)}</span>
+                    <span class="font-mono" style="font-size: 12px; margin-left: 8px; color: var(--text-secondary);">Confidence: ${(c.confidence * 100).toFixed(1)}%</span>
                 </div>
-                <div style="background: var(--surface-sunken); padding: 10px 12px; border: 1px solid var(--border-chalk);">
-                    <div class="font-mono" style="font-size: 9.5px; color: var(--ash-gray); margin-bottom: 4px;">POLICY SANCTION DIRECTIVE:</div>
-                    <div class="font-mono" style="font-weight: 700; font-size: 12px; color: var(--chalk-white);">${escapeHtml(c.action_badge || c.action)}</div>
-                </div>
-            </div>
-
-            <div style="background: var(--surface-sunken); padding: 12px 14px; border: 1px solid var(--border-chalk); margin-bottom: 16px;">
-                <div class="font-mono" style="font-size: 10px; color: var(--ash-gray); margin-bottom: 6px;">CALIBRATED PROBABILITY SPREAD:</div>
-                <div class="font-mono" style="display: flex; justify-content: space-between; font-size: 11.5px;">
-                    <span class="text-crimson font-bold">HATE: ${((probas['Hate Speech'] || 0) * 100).toFixed(1)}%</span>
-                    <span class="text-amber font-bold">OFFENSIVE: ${((probas['Offensive Language'] || 0) * 100).toFixed(1)}%</span>
-                    <span class="text-slate font-bold">NORMAL: ${((probas['Normal Speech'] || 0) * 100).toFixed(1)}%</span>
+                <div style="background: var(--surface-sunken); padding: 12px; border: 1px solid var(--border-subtle); border-radius: 4px;">
+                    <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600;">Recommended Action:</div>
+                    <div style="font-weight: 700; font-size: 13px; color: var(--text-primary);">${escapeHtml(c.action_badge || c.action)}</div>
                 </div>
             </div>
 
-            <div class="font-mono" style="background: rgba(245, 245, 240, 0.03); padding: 12px 14px; border: 1px solid var(--border-chalk); font-size: 12px; color: var(--bone-white); line-height: 1.45;">
-                <strong>[EVIDENCE RATIONALE]:</strong> ${escapeHtml(c.explanation || 'No forensic narrative available.')}
+            <div style="background: var(--surface-sunken); padding: 12px 14px; border: 1px solid var(--border-subtle); margin-bottom: 16px; border-radius: 4px;">
+                <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px; font-weight: 600;">Class Probabilities:</div>
+                <div class="font-mono" style="display: flex; justify-content: space-between; font-size: 12px;">
+                    <span class="text-crimson font-bold">Hate: ${((probas['Hate Speech'] || 0) * 100).toFixed(1)}%</span>
+                    <span class="text-amber font-bold">Offensive: ${((probas['Offensive Language'] || 0) * 100).toFixed(1)}%</span>
+                    <span class="text-slate font-bold">Normal: ${((probas['Normal Speech'] || 0) * 100).toFixed(1)}%</span>
+                </div>
+            </div>
+
+            <div style="background: rgba(255, 255, 255, 0.03); padding: 14px; border: 1px solid var(--border-subtle); font-size: 13px; color: var(--text-secondary); line-height: 1.5; border-radius: 4px;">
+                <strong style="color: var(--text-primary);">Reasoning:</strong> ${escapeHtml(c.explanation || 'No additional explanation available.')}
             </div>
         `;
 

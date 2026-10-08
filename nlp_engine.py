@@ -112,16 +112,16 @@ class HateSpeechEngine:
         # Moderation Recommendation Action
         if label == "Hate Speech" or p_hate >= 0.50:
             action = "CRITICAL_FLAG"
-            action_badge = "Auto-Flag & Remove (Hate Speech)"
-            explanation = "Comment contains prohibited hate speech targeting individuals or protected social identity groups. Immediate removal and moderation review recommended."
+            action_badge = "Flag & Remove"
+            explanation = "Contains hate speech or slurs targeting protected groups. Removal recommended."
         elif label == "Offensive Language" or severity >= 40.0:
             action = "WARN_OR_FILTER"
-            action_badge = "Sensitivity Warning / Shadow Filter"
-            explanation = "Comment contains offensive, profane, or aggressively vulgar language. Content should be hidden behind a sensitivity warning or reviewed."
+            action_badge = "Sensitivity Filter"
+            explanation = "Contains profanity or offensive insults. Sensitivity filter recommended."
         else:
             action = "APPROVED"
-            action_badge = "Approved / Clean Content"
-            explanation = "Comment complies with community guidelines. No hostile or toxic patterns identified."
+            action_badge = "Approved"
+            explanation = "Complies with community guidelines. No hostile or toxic patterns detected."
 
         # Sentiment Analysis
         tb = TextBlob(raw_text)
@@ -161,6 +161,19 @@ class HateSpeechEngine:
         if not words:
             return []
 
+        STOP_WORDS = {
+            "a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "as", "at",
+            "be", "because", "been", "before", "being", "below", "between", "both", "but", "by", "can", "could",
+            "did", "do", "does", "doing", "down", "during", "each", "few", "for", "from", "further", "had", "has",
+            "have", "having", "he", "her", "here", "hers", "herself", "him", "himself", "his", "how", "i", "if",
+            "in", "into", "is", "it", "its", "itself", "just", "me", "more", "most", "my", "myself", "no", "nor",
+            "not", "of", "off", "on", "once", "only", "or", "other", "our", "ours", "ourselves", "out", "over",
+            "own", "same", "she", "should", "so", "some", "such", "than", "that", "the", "their", "theirs", "them",
+            "themselves", "then", "there", "these", "they", "this", "those", "through", "to", "too", "under", "until",
+            "up", "very", "was", "we", "were", "what", "when", "where", "which", "while", "who", "whom", "why",
+            "with", "would", "you", "your", "yours", "yourself", "yourselves"
+        }
+
         # Extract features and classifier
         try:
             union = self.pipeline.named_steps['features']
@@ -176,20 +189,17 @@ class HateSpeechEngine:
                 weight = 0.0
                 token_type = "neutral"
 
-                if w_lower in vocab:
+                if w_lower not in STOP_WORDS and w_lower in vocab:
                     idx = vocab[w_lower]
                     w_hate = float(word_coef_hate[idx])
                     w_off = float(word_coef_off[idx])
 
-                    if w_hate > 0.8:
+                    if w_hate > 1.0:
                         token_type = "hate"
                         weight = round(w_hate, 2)
-                    elif w_off > 0.8:
+                    elif w_off > 1.0:
                         token_type = "offensive"
                         weight = round(w_off, 2)
-                    elif w_hate < -0.5 or w_off < -0.5:
-                        token_type = "normal"
-                        weight = round(max(-w_hate, -w_off), 2)
 
                 results.append({
                     "word": w,
@@ -229,13 +239,13 @@ class HateSpeechEngine:
         # Post-level risk status
         if counts["Hate Speech"] > 0:
             post_status = "CRITICAL_THREAT"
-            post_badge = "High Risk - Hate Speech Detected"
+            post_badge = "High Risk: Hate Speech"
         elif counts["Offensive Language"] >= (total * 0.25):
             post_status = "ELEVATED_TOXICITY"
-            post_badge = "Elevated Toxicity - High Profanity"
+            post_badge = "Elevated: Offensive Content"
         else:
             post_status = "SAFE_CLEAN"
-            post_badge = "Safe / Standard Online Discussion"
+            post_badge = "Clean Discussion"
 
         return {
             "total_comments": len(classified_items),
